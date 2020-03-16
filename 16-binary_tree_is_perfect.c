@@ -13,19 +13,24 @@ int binary_tree_is_perfect(const binary_tree_t *tree)
 	int lH = 0;
 	int rH = 0;
 
-	if (tree == NULL)
-		return (0);
-
 	if (tree->left == NULL && tree->right == NULL)
+		return (1);
+
+	if (tree == NULL || (tree->left == NULL || tree->right == NULL))
 		return (0);
 
 	lH = rec_height(tree->left);
 	rH = rec_height(tree->right);
 
 	if (lH == rH)
-		return (1);
-	else
-		return (0);
+	{
+		if (binary_tree_is_perfect(tree->left) &&
+		    binary_tree_is_perfect(tree->right))
+		{
+			return (1);
+		}
+	}
+	return (0);
 }
 
 /**
@@ -39,13 +44,12 @@ size_t rec_height(const binary_tree_t *tree)
 	size_t lH = 0;
 	size_t rH = 0;
 
-	if (tree == NULL)
+	if (tree == NULL || (tree->left == NULL && tree->right == NULL))
 		return (0);
 
-	if (tree->right != NULL)
-		rH = rec_height(tree->right) + 1;
-	if (tree->left != NULL)
-		lH = rec_height(tree->left) + 1;
+	rH = rec_height(tree->right) + 1;
+	lH = rec_height(tree->left) + 1;
+
 	if (lH > rH)
 		return (lH);
 	else
